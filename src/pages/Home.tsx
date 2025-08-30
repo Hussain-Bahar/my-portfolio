@@ -2,17 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const BASE = import.meta.env.BASE_URL;
+
 export default function Home() {
   return (
     <section className="relative overflow-hidden">
       <div className="homeimg-wrap">
-        <img src="/homebg.png" alt="Background" className="homeimg" />
+        <img src={`${BASE}homebg.jpg`} alt="Background" className="homeimg" />
         <div className="homeimg-overlay" />
       </div>
 
       <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl place-items-center px-6 py-10">
         <div className="text-center">
-          <img src="/pfpimg.png" alt="H7B" className="mx-auto mb-6 h-24 w-24 rounded-lg ring-1 ring-white/10" />
+          <img
+            src={`${BASE}logo-h7b.png`}
+            alt="H7B"
+            className="mx-auto mb-6 h-24 w-24 rounded-lg ring-1 ring-white/10"
+          />
           <motion.h1
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}

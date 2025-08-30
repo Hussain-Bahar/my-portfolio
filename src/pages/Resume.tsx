@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 
+const BASE = import.meta.env.BASE_URL;
+
 export default function Resume() {
   return (
     <section className="mx-auto my-10 max-w-6xl px-6">
@@ -15,7 +17,7 @@ export default function Resume() {
         </CardHeader>
         <CardContent>
           <iframe
-            src="/mycv.pdf"
+            src={`${BASE}mycv.pdf`}
             title="Hussain CV"
             className="h-[70vh] w-full rounded border border-white/10"
           />

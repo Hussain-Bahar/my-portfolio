@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/card";
 
+const BASE = import.meta.env.BASE_URL;
+
 type ProjectVideo = {
   title: string;
   file: string;
@@ -34,7 +36,7 @@ function VideoCard({ p }: { p: ProjectVideo }) {
     <Card className="group overflow-hidden border-white/10 bg-[color:var(--surface)]/70 backdrop-blur hover:shadow-[0_0_0_1px_var(--accent-20)] transition">
       <div className="relative aspect-video overflow-hidden">
         <video
-          src={`/${p.file}`}
+          src={`${BASE}${p.file}`}
           autoPlay
           loop
           muted

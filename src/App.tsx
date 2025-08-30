@@ -6,6 +6,8 @@ import useMagnetic from "./hooks/useMagnetic";
 import { AnimatePresence, motion } from "framer-motion";
 import ArrowHint from "./components/ArrowHint";
 
+const BASE = import.meta.env.BASE_URL;
+
 function useTheme() {
   const [theme, setTheme] = useState<"light" | "dark">(
     (localStorage.getItem("theme") as "light" | "dark") || "dark"
@@ -34,7 +36,7 @@ function useTheme() {
   return { theme, setTheme };
 }
 
-/* Direction-aware page motion */
+/** Direction-aware page motion (TS-safe easings) */
 const variants = {
   enter: (dir: number) => ({
     y: dir > 0 ? 48 : -48,
@@ -45,19 +47,19 @@ const variants = {
     y: 0,
     opacity: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.48, ease: "easeInOut" as const },
   },
   exit: (dir: number) => ({
     y: dir > 0 ? -48 : 48,
     opacity: 0,
     filter: "blur(6px)",
-    transition: { duration: 0.36, ease: [0.4, 0, 1, 1] },
+    transition: { duration: 0.36, ease: "easeInOut" as const },
   }),
 };
 
 export default function App() {
   const { theme, setTheme } = useTheme();
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLButtonElement | null>(null);
   useMagnetic(ref);
 
   const routes = useMemo(() => ["/", "/projects", "/about", "/resume"], []);
@@ -69,11 +71,10 @@ export default function App() {
   const idx = routes.indexOf(pathname);
   const canScroll = idx !== -1;
 
-  // ---- Delay & throttle tuning ----
-  const PRE_NAV_DELAY = 600; // wait this many ms BEFORE navigating (your requested delay)
-  const POST_THROTTLE = 600; // guard after nav so multiple scrolls don't stack
+  // Delay & throttle for page-change
+  const PRE_NAV_DELAY = 600; // delay BEFORE navigating (ms)
+  const POST_THROTTLE = 600; // cooldown after navigating (ms)
 
-  // Throttled navigation helper
   const throttleRef = useRef(false);
   const fireNav = useCallback(
     (nextIdx: number, newDir: number) => {
@@ -83,12 +84,10 @@ export default function App() {
       throttleRef.current = true;
       setDir(newDir);
 
-      // Pre-route delay so current page/arrow animation reads
       setTimeout(() => {
         nav(routes[nextIdx]);
       }, PRE_NAV_DELAY);
 
-      // Throttle window to avoid rapid double navigations
       setTimeout(() => {
         throttleRef.current = false;
       }, PRE_NAV_DELAY + POST_THROTTLE);
@@ -96,7 +95,7 @@ export default function App() {
     [nav, routes]
   );
 
-  // Wheel scroll
+  // Wheel
   useEffect(() => {
     if (!canScroll) return;
     const onWheel = (e: WheelEvent) => {
@@ -108,7 +107,7 @@ export default function App() {
     return () => window.removeEventListener("wheel", onWheel);
   }, [canScroll, fireNav, idx]);
 
-  // Keyboard navigation
+  // Keyboard
   useEffect(() => {
     if (!canScroll) return;
     const onKey = (e: KeyboardEvent) => {
@@ -149,7 +148,11 @@ export default function App() {
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[color:var(--surface)]/70 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <img src="/logo-h7b.jpg" alt="H7B" className="h-8 w-8 rounded-md ring-1 ring-white/10" />
+            <img
+              src={`${BASE}logo-h7b.png`}
+              alt="H7B"
+              className="h-8 w-8 rounded-md ring-1 ring-white/10"
+            />
             <span className="text-sm font-medium tracking-wide">Hussain Ahmed Bahar</span>
           </div>
           <nav className="flex items-center gap-6 text-sm">
@@ -194,7 +197,6 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* Bouncing arrow hint (prev/next) */}
       <ArrowHint
         hasPrev={idx > 0}
         hasNext={idx < routes.length - 1}

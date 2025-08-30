@@ -6,7 +6,7 @@ import useMagnetic from "./hooks/useMagnetic";
 import { AnimatePresence, motion } from "framer-motion";
 import ArrowHint from "./components/ArrowHint";
 
-const BASE = import.meta.env.BASE_URL;
+const BASE = "/"; // Vercel serves from root
 
 function useTheme() {
   const [theme, setTheme] = useState<"light" | "dark">(
@@ -36,7 +36,6 @@ function useTheme() {
   return { theme, setTheme };
 }
 
-/** Direction-aware page motion (TS-safe easings) */
 const variants = {
   enter: (dir: number) => ({
     y: dir > 0 ? 48 : -48,
@@ -66,14 +65,12 @@ export default function App() {
   const nav = useNavigate();
   const { pathname } = useLocation();
 
-  // Direction for animation (1 = forward/down, -1 = backward/up)
   const [dir, setDir] = useState(1);
   const idx = routes.indexOf(pathname);
   const canScroll = idx !== -1;
 
-  // Delay & throttle for page-change
-  const PRE_NAV_DELAY = 600; // delay BEFORE navigating (ms)
-  const POST_THROTTLE = 600; // cooldown after navigating (ms)
+  const PRE_NAV_DELAY = 600;
+  const POST_THROTTLE = 600;
 
   const throttleRef = useRef(false);
   const fireNav = useCallback(
@@ -95,7 +92,7 @@ export default function App() {
     [nav, routes]
   );
 
-  // Wheel
+  // Wheel scroll
   useEffect(() => {
     if (!canScroll) return;
     const onWheel = (e: WheelEvent) => {
@@ -146,16 +143,21 @@ export default function App() {
       <CursorBlob />
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[color:var(--surface)]/70 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+          {/* Mobile-friendly brand logo + text */}
+          <div className="flex items-center gap-2 min-w-0">
             <img
-              src={`${BASE}logo-h7b.jpg`}
+              src="/logo-h7b.jpg"
               alt="H7B"
-              className="h-8 w-8 rounded-md ring-1 ring-white/10"
+              className="h-8 w-8 flex-shrink-0 rounded-md ring-1 ring-white/10"
             />
-            <span className="text-sm font-medium tracking-wide">Hussain Ahmed Bahar</span>
+            <span className="text-xs sm:text-sm font-medium tracking-wide truncate max-w-[120px] sm:max-w-none">
+              Hussain Ahmed Bahar
+            </span>
           </div>
-          <nav className="flex items-center gap-6 text-sm">
+
+          {/* Navigation */}
+          <nav className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
             <NavLink to="/" end className={({ isActive }) =>
               `hover:opacity-100 opacity-80 ${isActive ? "text-[color:var(--accent)]" : ""}`
             }>Home</NavLink>
@@ -171,7 +173,7 @@ export default function App() {
             <button
               ref={ref}
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-full border border-white/10 px-3 py-2 hover:bg-white/5 transition"
+              className="rounded-full border border-white/10 px-2 sm:px-3 py-2 hover:bg-white/5 transition"
               aria-label="Toggle theme"
               title="Toggle theme"
             >

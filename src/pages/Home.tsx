@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <section className="relative overflow-hidden">
       <div className="homeimg-wrap">
-        <img src={`${BASE}homebg.jpg`} alt="Background" className="homeimg" />
+        <img src={`${BASE}homebg.png`} alt="Background" className="homeimg" />
         <div className="homeimg-overlay" />
       </div>
 

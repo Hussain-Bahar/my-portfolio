@@ -149,7 +149,7 @@ export default function App() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <img
-              src={`${BASE}logo-h7b.png`}
+              src={`${BASE}logo-h7b.jpg`}
               alt="H7B"
               className="h-8 w-8 rounded-md ring-1 ring-white/10"
             />

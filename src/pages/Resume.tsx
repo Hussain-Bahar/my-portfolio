@@ -8,7 +8,7 @@ export default function Resume() {
     <section className="mx-auto my-10 max-w-6xl px-6">
       <div className="mb-8">
         <div className="text-xs uppercase tracking-[0.2em] text-[color:var(--accent)]">CV</div>
-        <h1 className="mt-2 text-2xl font-semibold">Résumé</h1>
+        <h1 className="mt-2 text-2xl font-semibold">Resume</h1>
       </div>
 
       <Card className="glass border-white/10">

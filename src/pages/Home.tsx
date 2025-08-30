@@ -15,7 +15,7 @@ export default function Home() {
       <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl place-items-center px-6 py-10">
         <div className="text-center">
           <img
-            src={`${BASE}logo-h7b.png`}
+            src={`${BASE}logo-h7b.jpg`}
             alt="H7B"
             className="mx-auto mb-6 h-24 w-24 rounded-lg ring-1 ring-white/10"
           />

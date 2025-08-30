@@ -38,11 +38,11 @@ export default function About() {
         <CardContent className="flex flex-col gap-4">
           {/* Email */}
           <a
-            href="mailto:hussainbahar07@gmail.com"
+            href="mailto:7hussainbahar@gmail.com"
             className="flex items-center gap-3 text-sm hover:text-[color:var(--accent)] transition"
           >
             <Mail className="h-5 w-5 opacity-70" />
-            hussainbahar07@gmail.com
+            7hussainbahar@gmail.com
           </a>
 
           {/* Instagram */}
